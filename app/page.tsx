@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 import jobTitles from "@/lib/data/jobTitles.json";
 import companies from "@/lib/data/companies.json";
@@ -9,21 +9,16 @@ import AutocompleteInput from "@/components/AutocompleteInput";
 import Header from "@/components/Header";
 import { setTempCV } from "@/lib/cvStore";
 import { useUserStore } from "@/lib/userStore";
+import StepHandler from "@/components/StepHandler";
 
 export default function Home() {
+  const [currentStep, setCurrentStep] = useState(0);
+
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const startTimeRef = useRef<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  useEffect(() => {
-    if (!searchParams.get("step")) {
-      router.replace("?step=0");
-    }
-  }, [searchParams, router]);
-
-  const currentStep = parseInt(searchParams.get("step") || "0", 10);
   const [formData, setFormData] = useState<{
     name: string;
     role: string;
@@ -186,6 +181,8 @@ export default function Home() {
 
   return (
     <main>
+      <StepHandler onStep={setCurrentStep} />
+
       <Header />
 
       <div className="w-full max-w-md min-w-[280px] space-y-4 mx-auto">
