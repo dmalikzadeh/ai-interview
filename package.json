@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@azure/identity": "^4.10.1",
+    "@vercel/analytics": "^1.5.0",
     "ai": "^4.3.16",
     "formidable": "^3.5.4",
     "framer-motion": "^12.17.0",

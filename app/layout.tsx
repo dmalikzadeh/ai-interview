@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit, Pacifico } from "next/font/google";
 import "./globals.css";
 import BackgroundBlob from "@/components/BackgroundBlob";
 import AIStatus from "@/components/AIStatus";
+import { Analytics } from "@vercel/analytics/react";
 
 const useAI = process.env.NEXT_PUBLIC_USE_AI === "true";
 
@@ -77,6 +78,7 @@ export default function RootLayout({
             </a>
           </footer>
         </div>
+        <Analytics />
       </body>
     </html>
   );

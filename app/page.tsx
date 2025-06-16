@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { Suspense, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 import jobTitles from "@/lib/data/jobTitles.json";
@@ -181,7 +181,9 @@ export default function Home() {
 
   return (
     <main>
-      <StepHandler onStep={setCurrentStep} />
+      <Suspense fallback={null}>
+        <StepHandler onStep={setCurrentStep} />
+      </Suspense>
 
       <Header />
 
