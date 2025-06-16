@@ -1,4 +1,3 @@
-// components/BlobVisualizer.tsx
 import React, { useEffect, useRef } from "react";
 import "./blob.css";
 import gsap from "gsap";

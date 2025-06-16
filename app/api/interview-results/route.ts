@@ -14,7 +14,6 @@ export async function POST(req: Request) {
   const { name, role, company, notes = [] } = body;
 
   if (!useAI) {
-    // fallback manual version if AI is disabled
     return NextResponse.json({
       intro:
         "Thanks for completing your interview! Here's a quick summary based on your responses.",
@@ -92,7 +91,7 @@ Output JSON only. No markdown or extra text.
   try {
     const parsed = JSON.parse(content);
     return NextResponse.json(parsed);
-  } catch (e) {
+  } catch {
     console.error("Failed to parse AI response:", content);
     return NextResponse.json(
       { error: "Invalid AI response format" },

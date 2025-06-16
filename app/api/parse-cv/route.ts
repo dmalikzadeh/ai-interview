@@ -1,4 +1,3 @@
-// @ts-nocheck
 import pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import { NextResponse } from "next/server";
@@ -24,7 +23,6 @@ export async function POST(req: Request) {
   const buffer = Buffer.from(arrayBuffer);
   const fileType = file.name.split(".").pop()?.toLowerCase();
 
-  // If AI calls are disabled, skip parsing and return placeholder
   if (!useAI) {
     const dummy = "⚠️ AI disabled - CV parsing and summarization skipped.";
     return NextResponse.json({ summary: dummy });

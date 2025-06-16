@@ -1,4 +1,3 @@
-// app/api/first-message/route.ts
 import { NextResponse } from "next/server";
 import { AzureOpenAI } from "openai";
 
@@ -8,7 +7,7 @@ const openai = new AzureOpenAI({
   endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
   apiKey: process.env.AZURE_OPENAI_KEY!,
 });
-const useAI = process.env.NEXT_PUBLIC_USE_AI === "true"; // env flag to toggle AI
+const useAI = process.env.NEXT_PUBLIC_USE_AI === "true";
 
 export async function POST(req: Request) {
   const { name, role, company } = await req.json();

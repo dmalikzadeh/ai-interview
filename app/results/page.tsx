@@ -72,7 +72,7 @@ export default function InterviewResults() {
   }
 
   useEffect(() => {
-    if (fetchedOnce.current) return; // ⬅️ skip 2nd mount
+    if (fetchedOnce.current) return;
     fetchedOnce.current = true;
 
     (async () => {
@@ -99,7 +99,7 @@ export default function InterviewResults() {
 
   useEffect(() => {
     if (loading || !result) return;
-    if (animatedOnce.current) return; // ⬅️ skip duplicate animation
+    if (animatedOnce.current) return;
     animatedOnce.current = true;
 
     const tl = gsap.timeline();
@@ -202,7 +202,7 @@ export default function InterviewResults() {
                   ))
                 ) : (
                   <p className="item text-indigo-950/60 dark:text-white/60 italic">
-                    No specific strengths were highlighted this time — but don't
+                    No specific strengths were highlighted this time — but don&apos;t
                     worry! Focus on the feedback and keep improving.
                   </p>
                 )}

@@ -7,7 +7,7 @@ export default function BackgroundBlob() {
 
   useEffect(() => {
     let target = { x: 0, y: 0 };
-    let current = { x: 0, y: 0 };
+    const current = { x: 0, y: 0 };
 
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;

@@ -7,7 +7,7 @@ interface AutocompleteInputProps {
   onChange: (val: string) => void;
   placeholder?: string;
   suggestions: string[];
-  maxLength?: number; // ✅ Added this line
+  maxLength?: number; 
 }
 
 export default function AutocompleteInput({
@@ -51,10 +51,10 @@ export default function AutocompleteInput({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        maxLength={maxLength} // ✅ Added this line
+        maxLength={maxLength}
         className="w-full bg-black/5 dark:bg-white/10 border border-transparent backdrop-blur-md shadow-xs text-indigo-950 placeholder-indigo-950/60 dark:text-white dark:placeholder-white/60 rounded-full px-6 py-3 focus:outline-none focus:bg-transparent focus:border focus:border-black/10 focus:dark:border-white/30 transition"
         onFocus={() => setShowSuggestions(filtered.length > 0)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 100)} // Delay to allow click
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
       />
       {showSuggestions && (
         <ul className="absolute top-full mt-2 left-0 w-full z-50 bg-white text-black rounded-xl shadow-lg overflow-y-auto max-h-60">          {filtered.map((item) => (

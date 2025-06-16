@@ -3,7 +3,7 @@ import * as SpeechSDK from "microsoft-cognitiveservices-speech-sdk";
 export function startTranscription(
   onPartial: (text: string) => void,
   onFinal: (text: string) => void,
-  onError: (err: any) => void
+  onError: (err: unknown) => void
 ): () => void {
   const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
     process.env.NEXT_PUBLIC_AZURE_STT_KEY!,

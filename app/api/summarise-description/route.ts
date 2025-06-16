@@ -1,4 +1,3 @@
-// /app/api/summarise-description/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { AzureOpenAI } from "openai";
 

@@ -1,4 +1,4 @@
-let speakingRef = { current: false };
+const speakingRef = { current: false };
 export const getSpeakingRef = () => speakingRef;
 import * as SpeechSDK from "microsoft-cognitiveservices-speech-sdk";
 
@@ -102,7 +102,6 @@ export async function speakText(
         currentAudio = audio;
         window.currentInterviewAudio = audio;
 
-        // Re-use one AudioContext (browsers limit how many can exist).
         if (!audioContext || audioContext.state === "closed") {
           audioContext = new AudioContext();
         }

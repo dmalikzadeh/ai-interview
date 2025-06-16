@@ -9,9 +9,8 @@ import Header from "@/components/Header";
 import { useInterviewStore } from "@/lib/interviewStore";
 import { useUserStore } from "@/lib/userStore";
 import { playSound } from "@/lib/sound";
-import { animate, stagger } from "motion";
+import { animate } from "motion";
 import { splitText } from "motion-plus";
-import { useAnimation } from "framer-motion";
 import type { AnimationPlaybackControls } from "motion";
 import gsap from "gsap";
 
@@ -83,11 +82,8 @@ export default function InterviewChatPage() {
   const addMessage = useInterviewStore((s) => s.addMessage);
   const {
     startTimer,
-    pauseTimer,
-    resumeTimer,
     duration,
     timeRemaining,
-    isPaused,
   } = useInterviewStore();
   const timeElapsed = duration - timeRemaining;
 
@@ -182,7 +178,7 @@ export default function InterviewChatPage() {
           stiffness: 55,
           damping: 18,
           mass: 0.5,
-          delay: i * 0.26, // manual stagger
+          delay: i * 0.26,
         }
       );
 
@@ -244,9 +240,9 @@ export default function InterviewChatPage() {
         const clean = final.trim();
         if (
           !clean ||
-          clean === lastUserMsgRef.current || // duplicate
-          inFlightRef.current || // request running
-          getSpeakingRef().current // AI still talking
+          clean === lastUserMsgRef.current || 
+          inFlightRef.current || 
+          getSpeakingRef().current 
         )
           return;
 
@@ -351,9 +347,8 @@ export default function InterviewChatPage() {
       }
 
       try {
-        const AudioContext =
-          window.AudioContext || (window as any).webkitAudioContext;
-        const context = new AudioContext();
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        const context = new AudioCtx();
 
         context.resume().finally(() => {
           setTimeout(() => handleVoiceInputRef.current(), 300);
@@ -387,9 +382,8 @@ export default function InterviewChatPage() {
     if (speechSynthesis.speaking || getSpeakingRef().current) return;
 
     try {
-      const AudioContext =
-        window.AudioContext || (window as any).webkitAudioContext;
-      const context = new AudioContext();
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      const context = new AudioCtx();
 
       context.resume().finally(() => {
         setTimeout(() => handleVoiceInputRef.current(), 300);
@@ -555,7 +549,7 @@ export default function InterviewChatPage() {
             </h2>
             <p className="text-xs sm:text-sm text-indigo-950/80 dark:text-white/60 mb-6">
               Are you sure you want to leave? Your progress will be saved and
-              you'll see your results.
+              you&apos;ll see your results.
             </p>
             <div className="flex justify-center gap-2">
               <button

@@ -55,7 +55,7 @@ export default function AIStatus() {
               </svg>
             </h2>
             <p className="text-sm sm:text-md text-indigo-950/80 dark:text-white/60">
-              AI is temporarily disabled to manage server costs or due to daily usage limits. You're welcome to explore, but
+              AI is temporarily disabled to manage server costs or due to daily usage limits. You&apos;re welcome to explore, but
               note <strong>answers are demo content</strong>.
             </p>
             <button

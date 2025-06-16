@@ -23,7 +23,7 @@ export default function LoadingPage() {
       try {
         const formData = useUserStore.getState().formData;
 
-        const { name, role, company, description, length } = formData;
+        const { name, role, company, description } = formData;
 
         // 1. Clear any previous interview data
         setStatus("Getting things ready...");
@@ -82,7 +82,7 @@ export default function LoadingPage() {
 
         // 5. Redirect to interview page
         router.push("/interview");
-      } catch (err) {
+      } catch {
         setError("⚠️ Failed to start interview.");
       }
     };

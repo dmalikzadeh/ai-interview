@@ -92,10 +92,15 @@ export async function POST(req: Request) {
   // Trim history to last few turns (to reduce tokens)
   const recentHistory = history.slice(-MAX_HISTORY);
 
+  interface Message {
+    role: string;
+    content: string;
+  }
+
   // Compose messages array
   const restOfMessages = recentHistory
-    .filter((msg: any) => msg.content?.trim())
-    .map((msg: any) => ({
+    .filter((msg: Message) => msg.content?.trim())
+    .map((msg: Message) => ({
       role: msg.role,
       content: msg.content.trim(),
     }));
@@ -112,7 +117,7 @@ export async function POST(req: Request) {
     model: deployment,
     temperature: 0.7,
     messages,
-    response_format: { type: "json_object" }
+    response_format: { type: "json_object" },
   });
 
   console.log("🧠 Completion tokens used:", completion.usage?.total_tokens);
@@ -139,7 +144,7 @@ export async function POST(req: Request) {
   let parsed;
   try {
     parsed = JSON.parse(raw);
-  } catch (e) {
+  } catch {
     console.error("❌ Failed to parse JSON response:", raw);
     parsed = {
       message: raw.trim(),

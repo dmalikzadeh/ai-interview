@@ -44,7 +44,7 @@ export default function Home() {
     {
       label: (
         <>
-          What's your <strong className="text-indigo-950 dark:text-white font-semibold">name</strong>
+          What&apos;s your <strong className="text-indigo-950 dark:text-white font-semibold">name</strong>
           ?
         </>
       ),
@@ -104,7 +104,7 @@ export default function Home() {
     {
       label: (
         <>
-          What's your preferred{" "}
+          What&apos;s your preferred{" "}
           <strong className="text-indigo-950 dark:text-white font-semibold">interview length</strong>
           ?
         </>
@@ -120,7 +120,6 @@ export default function Home() {
 
   const handleNext = () => {
     if (currentStep < questions.length - 1) {
-      // Save name to when user finishes first step
       useUserStore.getState().setFormData({
         ...useUserStore.getState().formData,
         name: formData.name,
