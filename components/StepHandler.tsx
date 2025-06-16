@@ -12,8 +12,11 @@ export default function StepHandler({ onStep }: Props) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (!searchParams) return;
+
     const stepParam = searchParams.get("step");
-    const step = stepParam ? parseInt(stepParam, 10) : 0;
+    const parsed = parseInt(stepParam || "0", 10);
+    const step = isNaN(parsed) ? 0 : parsed;
 
     if (!stepParam) {
       router.replace("?step=0");
