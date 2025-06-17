@@ -21,7 +21,7 @@ export default function LandingIntro() {
   const [hidden] = useState(false);
 
   useEffect(() => {
-    playSound("/sounds/magic.mp3");
+    playSound("/sounds/magic.mp3", 0.1);
 
     const split = new SplitText("#li-logo", {
       type: "chars",

@@ -1,4 +1,7 @@
-export function playSound(src: string) {
+export function playSound(src: string, volume: number = 1) {
   const audio = new Audio(src);
-  audio.play().catch(() => {});
+  audio.volume = volume;
+  audio.play().catch((e) => {
+    console.warn("Audio playback failed:", e);
+  });
 }
