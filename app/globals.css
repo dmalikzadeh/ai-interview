@@ -93,3 +93,11 @@ html.dark .gradient-bg {
 .invisible-before-anim {
   visibility: hidden;
 }
+
+.magic-glow {
+  filter:
+    drop-shadow(0 0 3px #e9d8fd)
+    drop-shadow(0 0 6px #f5ccf1)
+    drop-shadow(0 0 10px #eecbff)
+    blur(1.4px);
+}

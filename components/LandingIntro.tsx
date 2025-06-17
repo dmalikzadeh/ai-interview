@@ -47,10 +47,10 @@ export default function LandingIntro() {
       y: 0,
       filter: "blur(0px)",
       scale: 1,
-      duration: 1.8,
+      duration: 1.2,
       ease: "expo.out",
       stagger: {
-        each: 0.05,
+        each: 0.045,
         from: "center",
       },
     });
@@ -60,7 +60,7 @@ export default function LandingIntro() {
       {
         opacity: 0,
         filter: "blur(8px)",
-        duration: 1,
+        duration: 0.5,
         ease: "power2.out",
       },
       "-=1.2"
@@ -70,7 +70,7 @@ export default function LandingIntro() {
       "#li-tagline",
       {
         filter: "blur(0px)",
-        duration: 0.6,
+        duration: 0.2,
         ease: "power2.out",
       },
       "-=0.6"
@@ -81,24 +81,30 @@ export default function LandingIntro() {
     // Animate the swoosh trail: draw forward, then fade out after the head passes
     tl.fromTo(
       ".mp",
-      { drawSVG: "0% 0%", opacity: 1 },
       {
-        duration: 2.2,
+        drawSVG: "0% 0%",
+        opacity: 1,
+        filter:
+          "drop-shadow(0 0 3px #d8b4fe) drop-shadow(0 0 6px #f3e8ff) blur(1.1px)",
+      },
+      {
+        duration: 1.1,
         drawSVG: "0% 100%",
-        ease: "slow(0.7, 0.9, false)", // smoother accel/decel
-        filter: "blur(2px)",
+        ease: "slow(0.7, 0.9, false)",
+        filter:
+          "drop-shadow(0 0 6px #eecbff) drop-shadow(0 0 10px #f9a8d4) blur(1.3px)",
         strokeLinecap: "round",
       },
-      "-=1.6"
+      1.05
     ).to(
       ".mp",
       {
         drawSVG: "80% 100%",
-        duration: 1.2,
+        duration: 1.05,
         ease: "power2.out",
         opacity: 0,
       },
-      "-=1.0"
+      1.65
     );
 
     tl.to(
@@ -109,33 +115,38 @@ export default function LandingIntro() {
         y: () => gsap.utils.random(-60, 60),
         rotation: () => gsap.utils.random(-45, 45),
         filter: "blur(8px)",
-        duration: 0.8,
+        duration: 0.4,
         ease: "power3.in",
         stagger: {
           each: 0.015,
           from: "center",
         },
       },
-      "+=0.6"
+      "+=0.1"
     );
 
     tl.to(
       "#svg-stage",
       {
         opacity: 0,
-        duration: 0.5,
+        duration: 0.4,
         ease: "power1.out",
       },
       "-=0.2"
     );
 
-    // Fade out the entire wrapper after the animations
     tl.to(
       "#li-wrapper",
       {
         autoAlpha: 0,
-        duration: 0.8,
+        duration: 0.2,
         ease: "power2.inOut",
+        onComplete: () => {
+          const wrapper = document.getElementById("li-wrapper");
+          if (wrapper && wrapper.parentElement) {
+            wrapper.parentElement.removeChild(wrapper);
+          }
+        },
       },
       "-=0.3"
     );
@@ -158,36 +169,36 @@ export default function LandingIntro() {
 
       <h1
         id="li-logo"
-        className="invisible-before-anim logo text-6xl tracking-tight text-indigo-950 dark:text-white"
+        className="invisible-before-anim logo text-6xl tracking-tight text-indigo-950 dark:text-white z-10"
       >
         InterviewBot
       </h1>
 
       <p
         id="li-tagline"
-        className="text-center invisible-before-anim text-lg font-light tracking-wide leading-relaxed text-indigo-950/60 dark:text-white/60"
+        className="text-center invisible-before-anim text-md font-normal tracking-wide leading-snug text-indigo-950/40 dark:text-white/40 z-10"
       >
         Your personal&nbsp;AI interview&nbsp;coach.
       </p>
       <svg
         id="svg-stage"
-        className="absolute left-[52%] top-[10%] -translate-x-1/2 w-full"
+        className="absolute left-[50%] top-[10%] -translate-x-1/2 w-full z-0 mix-blend-soft-light"
         viewBox="-40 -180 1250 1100"
       >
         <defs>
           <linearGradient id="trail-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#818cf8" stopOpacity="0" />
-            <stop offset="50%" stopColor="#a78bfa" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#f472b6" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="#e9d8ff" stopOpacity="0.1" />
+            <stop offset="45%" stopColor="#d8b4fe" stopOpacity="0.45" />
+            <stop offset="85%" stopColor="#f0abfc" stopOpacity="0.65" />
+            <stop offset="100%" stopColor="#f5d0fe" stopOpacity="0.35" />
           </linearGradient>
         </defs>
         <path
-          className="mp"
+          className="mp magic-glow"
           fill="none"
           stroke="url(#trail-grad)"
           strokeWidth="6"
           opacity="0"
-          filter="blur(2px)"
           strokeLinecap="round"
           d="M-80.3935 38.4885c226.1587 136.1314 494.2049 270.6289 709.8021 190.8398 123.345-50.6067 190.5209-160.6968 180.5698-256.3098-8.6316-82.987-98.5615-166.7609-214.2597-143.4332-115.698 23.326-161.8831 131.3317-148.847 213.4414 19.177 123.2523 118.394 231.4015 264.3037 288.3298C857.0848 388.2842 1046.3964 393.013 1694-28"
         />
