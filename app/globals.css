@@ -89,3 +89,7 @@ html.dark .gradient-bg {
   background-size: 480% 480%;
   animation: gradient-animation 64s ease infinite;
 }
+
+.invisible-before-anim {
+  visibility: hidden;
+}

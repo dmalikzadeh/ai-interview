@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import { setTempCV } from "@/lib/cvStore";
 import { useUserStore } from "@/lib/userStore";
 import StepHandler from "@/components/StepHandler";
+import LandingIntro from "@/components/LandingIntro";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -181,6 +182,8 @@ export default function Home() {
 
   return (
     <main>
+      <LandingIntro />
+
       <Suspense fallback={null}>
         <StepHandler onStep={setCurrentStep} />
       </Suspense>

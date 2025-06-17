@@ -58,10 +58,10 @@ export default function RootLayout({
 
           {!useAI && <AIStatus />}
 
-          <footer className="flex items-center gap-2 absolute bottom-4 right-4 text-sm text-black/40 dark:text-white/30">
+          <footer className="z-50 flex items-center gap-2 absolute bottom-4 right-4 text-sm text-black/40 dark:text-white/30">
             <span className="select-none pointer-events-none">© 2025 · Made by Diba</span>
             <a 
-              className="z-50 text-black/20 dark:text-white/15 hover:text-black/40 dark:hover:text-white/30 transition cursor-pointer" 
+              className="text-black/20 dark:text-white/15 hover:text-black/40 dark:hover:text-white/30 transition cursor-pointer" 
               href="https://www.linkedin.com/in/diba-malikzadeh-74700736a"
               target="_blank"
               rel="noopener noreferrer"
