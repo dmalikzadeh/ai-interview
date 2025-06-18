@@ -16,7 +16,7 @@ interface Message {
 
 interface InterviewState {
   messages: Message[];
-  duration: number; // in seconds (e.g. 300 for 5 mins)
+  duration: number;
   timeRemaining: number;
   isPaused: boolean;
   timerInterval: NodeJS.Timeout | null;

@@ -142,7 +142,7 @@ export default function InterviewChatPage() {
         setStartCaptionAnim(true);
       });
 
-      setVolume(0); // reset visualiser
+      setVolume(0);
 
       if (!mutedRef.current && !interviewEndedRef.current) {
         handleVoiceInput();
@@ -165,7 +165,7 @@ export default function InterviewChatPage() {
     lastWordIdx.current = -1;
 
     const { words } = splitText(h1);
-    animationRef.current?.forEach((a) => a.stop()); // Stop any old animation
+    animationRef.current?.forEach((a) => a.stop());
 
     const newAnimations: AnimationPlaybackControls[] = [];
 

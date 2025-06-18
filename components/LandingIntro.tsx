@@ -78,7 +78,6 @@ export default function LandingIntro() {
 
     tl.to("#svg-stage", { opacity: 1, duration: 0.3 }, "-=1.6");
 
-    // Animate the swoosh trail: draw forward, then fade out after the head passes
     tl.fromTo(
       ".mp",
       {

@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InterviewBot – AI Mock Interview Coach
+
+A full-stack web application built with **Next.js**, **TypeScript**, and **Azure OpenAI (GPT-4o)**.  
+It simulates realistic voice interviews and provides instant, personalised feedback to help candidates improve their responses and confidence.
+
+## Features
+
+- Real-time voice interviews using Speech-to-Text and Text-to-Speech  
+- Live transcription with Azure Cognitive Services  
+- GPT-4o powered AI feedback with strengths and practical improvement tips  
+- Natural interview pacing with voice interaction and response delay handling  
+- Animated voice visualisation and session timing  
+- Responsive, modern UI optimised for desktop and mobile
+
+## Tech Stack
+
+- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS  
+- **Backend:** Serverless Edge API Routes (Next.js)  
+- **AI & Speech:** Azure OpenAI (GPT-4o), Azure Speech Services
+
+## Demo
+
+- Live Site: [https://interview.bydiba.dev](https://interview.bydiba.dev)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/` – Main pages and routes  
+- `api/` – Serverless functions for AI and feedback  
+- `components/` – Reusable UI elements  
+- `lib/` – Logic for AI, speech, and state  
+- `public/` – Static files (icons, sounds, etc.)
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+Deployed on **Vercel** using serverless Edge Functions.  
+Configure environment variables in `.env` to use your own Azure credentials.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the [MIT License](LICENSE).

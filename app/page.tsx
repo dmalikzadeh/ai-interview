@@ -129,7 +129,7 @@ export default function Home() {
       setTempCV(formData.cv);
       useUserStore.getState().setFormData({
         ...formData,
-        cv: formData.cv?.name || "", // convert File to string (filename or empty)
+        cv: formData.cv?.name || "",
       });
       router.push("/loading");
     }
