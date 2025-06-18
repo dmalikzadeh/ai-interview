@@ -181,7 +181,7 @@ export default function LandingIntro() {
       </p>
       <svg
         id="svg-stage"
-        className="absolute left-[50%] top-[10%] -translate-x-1/2 w-full z-0 mix-blend-soft-light"
+        className="absolute left-[50%] top-[40%] -translate-x-1/2 w-full z-0 mix-blend-soft-light"
         viewBox="-40 -180 1250 1100"
       >
         <defs>
