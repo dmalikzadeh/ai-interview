@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import { getTempCV } from "@/lib/cvStore";
 import { useUserStore } from "@/lib/userStore";
 import { useInterviewStore } from "@/lib/interviewStore";
+import { prewarmTTS } from "@/lib/speak";
 
 const setFormData = useUserStore.getState().setFormData;
 
@@ -64,7 +65,11 @@ export default function LoadingPage() {
         }
         setFormData({ description: finalDescription });
 
-        // 4. Generate first message from AI
+        // 4. Warm azure TTS
+        setStatus("Warming up the interviewer's voice...");
+        prewarmTTS();
+
+        // 5. Generate first message from AI
         setStatus("Thinking of the perfect opening question...");
         const firstMessageRes = await fetch("/api/first-message", {
           method: "POST",

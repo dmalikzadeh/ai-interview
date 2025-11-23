@@ -57,7 +57,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: fallbackMessage });
   }
 
-  // Construct improved prompt for AI
   const prompt = [
     `You are Ava, a realistic AI interviewer for ${company}, interviewing ${name} for the ${role} role.`,
     ``,

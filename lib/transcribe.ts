@@ -19,7 +19,7 @@ export async function startTranscription(
   );
   speechConfig.setProperty(
     SpeechSDK.PropertyId.SpeechServiceConnection_EndSilenceTimeoutMs,
-    "2000"
+    "4000"
   );
 
   const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
@@ -47,7 +47,7 @@ export async function startTranscription(
         debounceTimer = setTimeout(() => {
           onFinal(finalBuffer.trim());
           finalBuffer = "";
-        }, 2000);
+        }, 3500);
       }
     }
   };

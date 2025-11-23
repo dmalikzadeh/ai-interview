@@ -17,7 +17,7 @@ import gsap from "gsap";
 export default function InterviewChatPage() {
   const [interimTranscript, setInterimTranscript] = useState("");
   const [aiCaption, setAiCaption] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [muted, setMuted] = useState(false);
   const [paused, setPaused] = useState(false);
   const [volume, setVolume] = useState(0);

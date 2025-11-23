@@ -14,6 +14,7 @@ import LandingIntro from "@/components/LandingIntro";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -140,6 +141,9 @@ export default function Home() {
 
       router.push(`?step=${currentStep + 1}`);
     } else {
+      if (loading) return;
+      setLoading(true);
+
       try {
         const AudioCtx =
           window.AudioContext ||
@@ -147,11 +151,16 @@ export default function Home() {
             .webkitAudioContext;
 
         const ctx = new AudioCtx();
-        await ctx.resume();
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
 
         await navigator.mediaDevices.getUserMedia({ audio: true });
 
-        console.log("Audio + Mic unlocked!");
+        const silent = new Audio();
+        silent.src =
+          "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=";
+        await silent.play().catch(() => {});
       } catch (err) {
         console.warn("Failed to unlock audio:", err);
       }
@@ -421,18 +430,44 @@ export default function Home() {
           <div className="w-full flex items-center justify-center transition-opacity duration-300 opacity-100">
             <button
               onClick={handleNext}
-              className="bg-[#4B3E8D] hover:bg-[#6353B3] text-white dark:bg-[#f3eaff] hover:dark:bg-[#D0C6FF] dark:text-[#1E1E2F] mt-8 px-6 py-3 text-sm font-semibold rounded-full shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+              disabled={loading}
+              className="bg-[#4B3E8D] hover:bg-[#6353B3] text-white dark:bg-[#f3eaff] hover:dark:bg-[#D0C6FF] dark:text-[#1E1E2F] mt-8 px-6 py-3 text-sm font-semibold rounded-full shadow-md hover:shadow-xl hover:scale-105 disabled:pointer-events-none disabled:opacity-80 transition-all duration-300 cursor-pointer"
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-3">
                 Generate Interview
-                <svg
-                  className="w-[1.2em] h-[1.2em]"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19.13 11.57a1 1 0 0 0-.54-.9c-.86-.43-1.78-.83-2.82-1.23a6.07 6.07 0 0 1-3.6-3.64 29.2 29.2 0 0 0-1.2-2.86 1 1 0 0 0-1.8 0c-.43.87-.83 1.8-1.21 2.86a6.07 6.07 0 0 1-3.6 3.64c-1.03.4-1.96.8-2.81 1.24a1 1 0 0 0 0 1.78c.86.44 1.78.84 2.81 1.23a6.07 6.07 0 0 1 3.6 3.65c.38 1.05.78 1.98 1.21 2.85a1 1 0 0 0 1.8 0c.42-.87.82-1.8 1.2-2.85.65-1.73 1.9-3 3.6-3.65 1.03-.39 1.96-.8 2.82-1.23a1 1 0 0 0 .54-.9ZM17.1 6.54c.25.13.5.24.75.33.2.08.35.23.43.44l.32.76a1 1 0 0 0 1.8 0c.12-.25.23-.5.32-.76a.72.72 0 0 1 .43-.43c.25-.1.5-.2.76-.34a1 1 0 0 0 0-1.78c-.26-.13-.51-.23-.76-.33a.72.72 0 0 1-.43-.44l-.32-.76a1 1 0 0 0-1.8 0c-.12.26-.23.51-.32.76a.72.72 0 0 1-.43.44c-.25.1-.5.2-.75.33a1 1 0 0 0 0 1.78ZM22.45 17.18a9.3 9.3 0 0 0-.93-.4 1.2 1.2 0 0 1-.72-.73 9.88 9.88 0 0 0-.4-.95 1 1 0 0 0-1.8 0c-.15.32-.28.63-.4.94-.13.35-.38.6-.7.73-.32.12-.64.25-.95.42a1 1 0 0 0 0 1.78c.31.16.63.3.94.41.34.13.58.38.71.72.12.32.25.63.4.95a1 1 0 0 0 1.8 0c.16-.31.29-.63.4-.94.13-.35.38-.6.72-.73.3-.12.62-.25.93-.41a1 1 0 0 0 0-1.79Z" />
-                </svg>
+                {loading ? (
+                  <svg
+                    className="w-[1.2em] h-[1.2em] animate-spin"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+                      className="text-black/10"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                    <path
+                      d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-[1.2em] h-[1.2em]"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19.13 11.57a1 1 0 0 0-.54-.9c-.86-.43-1.78-.83-2.82-1.23a6.07 6.07 0 0 1-3.6-3.64 29.2 29.2 0 0 0-1.2-2.86 1 1 0 0 0-1.8 0c-.43.87-.83 1.8-1.21 2.86a6.07 6.07 0 0 1-3.6 3.64c-1.03.4-1.96.8-2.81 1.24a1 1 0 0 0 0 1.78c.86.44 1.78.84 2.81 1.23a6.07 6.07 0 0 1 3.6 3.65c.38 1.05.78 1.98 1.21 2.85a1 1 0 0 0 1.8 0c.42-.87.82-1.8 1.2-2.85.65-1.73 1.9-3 3.6-3.65 1.03-.39 1.96-.8 2.82-1.23a1 1 0 0 0 .54-.9ZM17.1 6.54c.25.13.5.24.75.33.2.08.35.23.43.44l.32.76a1 1 0 0 0 1.8 0c.12-.25.23-.5.32-.76a.72.72 0 0 1 .43-.43c.25-.1.5-.2.76-.34a1 1 0 0 0 0-1.78c-.26-.13-.51-.23-.76-.33a.72.72 0 0 1-.43-.44l-.32-.76a1 1 0 0 0-1.8 0c-.12.26-.23.51-.32.76a.72.72 0 0 1-.43.44c-.25.1-.5.2-.75.33a1 1 0 0 0 0 1.78ZM22.45 17.18a9.3 9.3 0 0 0-.93-.4 1.2 1.2 0 0 1-.72-.73 9.88 9.88 0 0 0-.4-.95 1 1 0 0 0-1.8 0c-.15.32-.28.63-.4.94-.13.35-.38.6-.7.73-.32.12-.64.25-.95.42a1 1 0 0 0 0 1.78c.31.16.63.3.94.41.34.13.58.38.71.72.12.32.25.63.4.95a1 1 0 0 0 1.8 0c.16-.31.29-.63.4-.94.13-.35.38-.6.72-.73.3-.12.62-.25.93-.41a1 1 0 0 0 0-1.79Z" />
+                  </svg>
+                )}
               </span>
             </button>
           </div>

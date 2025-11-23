@@ -16,8 +16,12 @@ speechConfig.speechSynthesisVoiceName = "en-US-Ava:DragonHDLatestNeural";
 speechConfig.speechSynthesisOutputFormat =
   SpeechSDK.SpeechSynthesisOutputFormat.Audio16Khz32KBitRateMonoMp3;
 
+let globalSynthesizer: SpeechSDK.SpeechSynthesizer | null = null;
+
 let analyser: AnalyserNode | null = null;
 let dataArray: Uint8Array | null = null;
+let currentAudio: HTMLAudioElement | null = null;
+let audioContext: AudioContext | null = null;
 
 export function getCurrentVolume(): number {
   if (!analyser || !dataArray) return 0;
@@ -26,8 +30,14 @@ export function getCurrentVolume(): number {
   return sum / dataArray.length / 255;
 }
 
-let currentAudio: HTMLAudioElement | null = null;
-let audioContext: AudioContext | null = null;
+export function prewarmTTS() {
+  if (globalSynthesizer) return;
+
+  globalSynthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig, null);
+
+  const conn = SpeechSDK.Connection.fromSynthesizer(globalSynthesizer);
+  conn.openConnection(undefined);
+}
 
 export function pauseSpeech() {
   if (currentAudio && !currentAudio.paused) {
@@ -59,6 +69,8 @@ export async function speakText(
   onStart?: () => void,
   onEnd?: () => void
 ): Promise<void> {
+  if (!globalSynthesizer) prewarmTTS();
+
   return new Promise((resolve, reject) => {
     const ssml = `
       <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis"
@@ -90,8 +102,8 @@ export async function speakText(
         const audio = new Audio(audioUrl);
 
         audio.onplay = () => {
-          onStart?.();
           speakingRef.current = true;
+          onStart?.();
         };
 
         if (window.currentInterviewAudio) {
@@ -139,9 +151,9 @@ export async function speakText(
         };
       },
       (err) => {
+        speakingRef.current = false;
         synthesizer.close();
         currentAudio = null;
-        speakingRef.current = false;
         onEnd?.();
         reject(err);
       }
