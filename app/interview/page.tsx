@@ -80,11 +80,7 @@ export default function InterviewChatPage() {
   const formData = useUserStore((s) => s.formData);
   const messages = useInterviewStore((state) => state.messages);
   const addMessage = useInterviewStore((s) => s.addMessage);
-  const {
-    startTimer,
-    duration,
-    timeRemaining,
-  } = useInterviewStore();
+  const { startTimer, duration, timeRemaining } = useInterviewStore();
   const timeElapsed = duration - timeRemaining;
 
   // Start the intreview timer
@@ -145,7 +141,7 @@ export default function InterviewChatPage() {
       setVolume(0);
 
       if (!mutedRef.current && !interviewEndedRef.current) {
-        handleVoiceInput();
+        await handleVoiceInput();
       }
     };
 
@@ -217,7 +213,7 @@ export default function InterviewChatPage() {
     window.currentInterviewAudio = null;
   };
 
-  const handleVoiceInput = () => {
+  const handleVoiceInput = async () => {
     if (
       mutedRef.current ||
       transcribing ||
@@ -230,7 +226,7 @@ export default function InterviewChatPage() {
     stopTranscriptionRef.current?.();
     setTranscribing(true);
 
-    stopTranscriptionRef.current = startTranscription(
+    stopTranscriptionRef.current = await startTranscription(
       (partial) => {
         setInterimTranscript(partial);
       },
@@ -240,9 +236,9 @@ export default function InterviewChatPage() {
         const clean = final.trim();
         if (
           !clean ||
-          clean === lastUserMsgRef.current || 
-          inFlightRef.current || 
-          getSpeakingRef().current 
+          clean === lastUserMsgRef.current ||
+          inFlightRef.current ||
+          getSpeakingRef().current
         )
           return;
 
@@ -288,7 +284,7 @@ export default function InterviewChatPage() {
                 setStartCaptionAnim(true);
               }
             );
-            
+
             await new Promise((res) => setTimeout(res, 1000));
             stopSpeech();
             router.push("/results");
@@ -310,7 +306,7 @@ export default function InterviewChatPage() {
 
   handleVoiceInputRef.current = handleVoiceInput;
 
-  const togglePause = () => {
+  const togglePause = async () => {
     const nowPaused = !paused;
     setPaused(nowPaused);
 
@@ -347,15 +343,18 @@ export default function InterviewChatPage() {
       }
 
       try {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext?: typeof AudioContext })
+            .webkitAudioContext;
         const context = new AudioCtx();
 
         context.resume().finally(() => {
-          setTimeout(() => handleVoiceInputRef.current(), 300);
+          setTimeout(async () => handleVoiceInputRef.current(), 300);
         });
       } catch (err) {
         console.warn("AudioContext issue:", err);
-        handleVoiceInput();
+        await handleVoiceInput();
       }
     }
   };
@@ -382,11 +381,14 @@ export default function InterviewChatPage() {
     if (speechSynthesis.speaking || getSpeakingRef().current) return;
 
     try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
       const context = new AudioCtx();
 
       context.resume().finally(() => {
-        setTimeout(() => handleVoiceInputRef.current(), 300);
+        setTimeout(async () => handleVoiceInputRef.current(), 300);
       });
     } catch (err) {
       console.warn("AudioContext issue:", err);

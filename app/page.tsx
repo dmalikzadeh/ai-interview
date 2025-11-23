@@ -40,7 +40,10 @@ export default function Home() {
     {
       label: (
         <>
-          What&apos;s your <strong className="text-indigo-950 dark:text-white font-semibold">name</strong>
+          What&apos;s your{" "}
+          <strong className="text-indigo-950 dark:text-white font-semibold">
+            name
+          </strong>
           ?
         </>
       ),
@@ -52,7 +55,10 @@ export default function Home() {
     {
       label: (
         <>
-          What <strong className="text-indigo-950 dark:text-white font-semibold">job role</strong>{" "}
+          What{" "}
+          <strong className="text-indigo-950 dark:text-white font-semibold">
+            job role
+          </strong>{" "}
           are you preparing for?
         </>
       ),
@@ -64,8 +70,11 @@ export default function Home() {
     {
       label: (
         <>
-          Which <strong className="text-indigo-950 dark:text-white font-semibold">company</strong> is
-          the interview with?
+          Which{" "}
+          <strong className="text-indigo-950 dark:text-white font-semibold">
+            company
+          </strong>{" "}
+          is the interview with?
         </>
       ),
       name: "company",
@@ -77,7 +86,10 @@ export default function Home() {
       label: (
         <>
           Want to upload your{" "}
-          <strong className="text-indigo-950 dark:text-white font-semibold">CV</strong>?
+          <strong className="text-indigo-950 dark:text-white font-semibold">
+            CV
+          </strong>
+          ?
         </>
       ),
       name: "cv",
@@ -89,7 +101,10 @@ export default function Home() {
       label: (
         <>
           Can you share the{" "}
-          <strong className="text-indigo-950 dark:text-white font-semibold">job description</strong>?
+          <strong className="text-indigo-950 dark:text-white font-semibold">
+            job description
+          </strong>
+          ?
         </>
       ),
       name: "description",
@@ -101,7 +116,9 @@ export default function Home() {
       label: (
         <>
           What&apos;s your preferred{" "}
-          <strong className="text-indigo-950 dark:text-white font-semibold">interview length</strong>
+          <strong className="text-indigo-950 dark:text-white font-semibold">
+            interview length
+          </strong>
           ?
         </>
       ),
@@ -114,7 +131,7 @@ export default function Home() {
 
   const current = questions[currentStep];
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < questions.length - 1) {
       useUserStore.getState().setFormData({
         ...useUserStore.getState().formData,
@@ -123,14 +140,33 @@ export default function Home() {
 
       router.push(`?step=${currentStep + 1}`);
     } else {
+      try {
+        const AudioCtx =
+          window.AudioContext ||
+          (window as Window & { webkitAudioContext?: typeof AudioContext })
+            .webkitAudioContext;
+
+        const ctx = new AudioCtx();
+        await ctx.resume();
+
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        console.log("Audio + Mic unlocked!");
+      } catch (err) {
+        console.warn("Failed to unlock audio:", err);
+      }
+
       if (startTimeRef.current === null) {
         startTimeRef.current = Date.now();
-      } 
+      }
+
       setTempCV(formData.cv);
+
       useUserStore.getState().setFormData({
         ...formData,
         cv: formData.cv?.name || "",
       });
+
       router.push("/loading");
     }
   };
@@ -194,7 +230,9 @@ export default function Home() {
         <label className="block mb-8 text-center text-xl sm:text-2xl font-medium text-indigo-950/80 dark:text-white/80">
           {current.label}
           {!current.required && (
-            <p className="text-indigo-950/40 dark:text-white/40 text-sm text-center">Optional</p>
+            <p className="text-indigo-950/40 dark:text-white/40 text-sm text-center">
+              Optional
+            </p>
           )}
         </label>
 
@@ -278,7 +316,9 @@ export default function Home() {
                       ? "border-black/20 dark:border-white/60"
                       : "border-black/10 hover:border-black/20 dark:border-white/30 hover:dark:border-white/60"
                   } backdrop-blur-md shadow-xs text-indigo-950/60 dark:text-white/60 ${
-                    formData.cv ? "" : "hover:text-indigo-950 hover:dark:text-white"
+                    formData.cv
+                      ? ""
+                      : "hover:text-indigo-950 hover:dark:text-white"
                   } placeholder-indigo-950/60 dark:placeholder-white/60 rounded-2xl px-6 py-12 text-center ${
                     formData.cv ? "cursor-default" : "cursor-pointer"
                   } transition flex flex-col items-center justify-center gap-4`}
@@ -334,7 +374,9 @@ export default function Home() {
             {currentStep < questions.length - 1 && (
               <div
                 className={`flex justify-center mt-4 sm:mt-0 sm:absolute sm:right-[-2.5rem] sm:top-1/2 sm:-translate-y-1/2 transition-opacity duration-300 ${
-                  isFilled || !current.required ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                  isFilled || !current.required
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
                 }`}
               >
                 <button
@@ -383,7 +425,14 @@ export default function Home() {
             >
               <span className="flex items-center gap-2">
                 Generate Interview
-                <svg className="w-[1.2em] h-[1.2em]" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.13 11.57a1 1 0 0 0-.54-.9c-.86-.43-1.78-.83-2.82-1.23a6.07 6.07 0 0 1-3.6-3.64 29.2 29.2 0 0 0-1.2-2.86 1 1 0 0 0-1.8 0c-.43.87-.83 1.8-1.21 2.86a6.07 6.07 0 0 1-3.6 3.64c-1.03.4-1.96.8-2.81 1.24a1 1 0 0 0 0 1.78c.86.44 1.78.84 2.81 1.23a6.07 6.07 0 0 1 3.6 3.65c.38 1.05.78 1.98 1.21 2.85a1 1 0 0 0 1.8 0c.42-.87.82-1.8 1.2-2.85.65-1.73 1.9-3 3.6-3.65 1.03-.39 1.96-.8 2.82-1.23a1 1 0 0 0 .54-.9ZM17.1 6.54c.25.13.5.24.75.33.2.08.35.23.43.44l.32.76a1 1 0 0 0 1.8 0c.12-.25.23-.5.32-.76a.72.72 0 0 1 .43-.43c.25-.1.5-.2.76-.34a1 1 0 0 0 0-1.78c-.26-.13-.51-.23-.76-.33a.72.72 0 0 1-.43-.44l-.32-.76a1 1 0 0 0-1.8 0c-.12.26-.23.51-.32.76a.72.72 0 0 1-.43.44c-.25.1-.5.2-.75.33a1 1 0 0 0 0 1.78ZM22.45 17.18a9.3 9.3 0 0 0-.93-.4 1.2 1.2 0 0 1-.72-.73 9.88 9.88 0 0 0-.4-.95 1 1 0 0 0-1.8 0c-.15.32-.28.63-.4.94-.13.35-.38.6-.7.73-.32.12-.64.25-.95.42a1 1 0 0 0 0 1.78c.31.16.63.3.94.41.34.13.58.38.71.72.12.32.25.63.4.95a1 1 0 0 0 1.8 0c.16-.31.29-.63.4-.94.13-.35.38-.6.72-.73.3-.12.62-.25.93-.41a1 1 0 0 0 0-1.79Z"/></svg>
+                <svg
+                  className="w-[1.2em] h-[1.2em]"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19.13 11.57a1 1 0 0 0-.54-.9c-.86-.43-1.78-.83-2.82-1.23a6.07 6.07 0 0 1-3.6-3.64 29.2 29.2 0 0 0-1.2-2.86 1 1 0 0 0-1.8 0c-.43.87-.83 1.8-1.21 2.86a6.07 6.07 0 0 1-3.6 3.64c-1.03.4-1.96.8-2.81 1.24a1 1 0 0 0 0 1.78c.86.44 1.78.84 2.81 1.23a6.07 6.07 0 0 1 3.6 3.65c.38 1.05.78 1.98 1.21 2.85a1 1 0 0 0 1.8 0c.42-.87.82-1.8 1.2-2.85.65-1.73 1.9-3 3.6-3.65 1.03-.39 1.96-.8 2.82-1.23a1 1 0 0 0 .54-.9ZM17.1 6.54c.25.13.5.24.75.33.2.08.35.23.43.44l.32.76a1 1 0 0 0 1.8 0c.12-.25.23-.5.32-.76a.72.72 0 0 1 .43-.43c.25-.1.5-.2.76-.34a1 1 0 0 0 0-1.78c-.26-.13-.51-.23-.76-.33a.72.72 0 0 1-.43-.44l-.32-.76a1 1 0 0 0-1.8 0c-.12.26-.23.51-.32.76a.72.72 0 0 1-.43.44c-.25.1-.5.2-.75.33a1 1 0 0 0 0 1.78ZM22.45 17.18a9.3 9.3 0 0 0-.93-.4 1.2 1.2 0 0 1-.72-.73 9.88 9.88 0 0 0-.4-.95 1 1 0 0 0-1.8 0c-.15.32-.28.63-.4.94-.13.35-.38.6-.7.73-.32.12-.64.25-.95.42a1 1 0 0 0 0 1.78c.31.16.63.3.94.41.34.13.58.38.71.72.12.32.25.63.4.95a1 1 0 0 0 1.8 0c.16-.31.29-.63.4-.94.13-.35.38-.6.72-.73.3-.12.62-.25.93-.41a1 1 0 0 0 0-1.79Z" />
+                </svg>
               </span>
             </button>
           </div>

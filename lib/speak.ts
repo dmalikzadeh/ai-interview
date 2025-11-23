@@ -21,7 +21,7 @@ let dataArray: Uint8Array | null = null;
 
 export function getCurrentVolume(): number {
   if (!analyser || !dataArray) return 0;
-  analyser.getByteFrequencyData(dataArray);
+  analyser.getByteFrequencyData(dataArray as Uint8Array<ArrayBuffer>);
   const sum = dataArray.reduce((a, b) => a + b, 0);
   return sum / dataArray.length / 255;
 }
@@ -57,7 +57,7 @@ export function stopSpeech() {
 export async function speakText(
   rawText: string,
   onStart?: () => void,
-  onEnd?: () => void,
+  onEnd?: () => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const ssml = `
@@ -106,6 +106,11 @@ export async function speakText(
           audioContext = new AudioContext();
         }
         const ctx = audioContext;
+
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
+
         const source = ctx.createMediaElementSource(audio);
 
         analyser = ctx.createAnalyser();
