@@ -5,28 +5,7 @@ export async function startTranscription(
   onFinal: (text: string) => void,
   onError: (err: unknown) => void
 ) {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-  const audioContext = new AudioContext();
-  const source = audioContext.createMediaStreamSource(stream);
-
-  const processor = audioContext.createScriptProcessor(4096, 1, 1);
-
-  source.connect(processor);
-  processor.connect(audioContext.destination);
-
-  const pushStream = SpeechSDK.AudioInputStream.createPushStream();
-
-  processor.onaudioprocess = (event) => {
-    const input = event.inputBuffer.getChannelData(0);
-    const buffer = new Int16Array(input.length);
-    for (let i = 0; i < input.length; i++) {
-      buffer[i] = input[i] * 32767;
-    }
-    pushStream.write(buffer.buffer);
-  };
-
-  const audioConfig = SpeechSDK.AudioConfig.fromStreamInput(pushStream);
+  await navigator.mediaDevices.getUserMedia({ audio: true });
 
   const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
     process.env.NEXT_PUBLIC_AZURE_STT_KEY!,
@@ -43,6 +22,7 @@ export async function startTranscription(
     "2000"
   );
 
+  const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
   const recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
 
   let active = true;
@@ -83,10 +63,6 @@ export async function startTranscription(
   return () => {
     active = false;
     if (debounceTimer) clearTimeout(debounceTimer);
-    processor.disconnect();
-    source.disconnect();
-    pushStream.close();
-
     recognizer.stopContinuousRecognitionAsync(() => recognizer.close());
   };
 }
