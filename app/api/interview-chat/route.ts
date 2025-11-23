@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { AzureOpenAI } from "openai";
-import type { ChatCompletionMessageParam } from "openai/resources";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 const deployment = process.env.AZURE_OPENAI_DEPLOYMENT_GPT_4O!;
 const openai = new AzureOpenAI({
